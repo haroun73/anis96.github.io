@@ -1,59 +1,117 @@
 #include <stdio.h>
-struct MachineALaver {
-	int demarree;
+#include <stdbool.h>
+
+
+
+struct Voiture {
+    bool estDemarree;
+    int vitesse;
 };
 
-void demarrer(struct MachineALaver* machine) {
-	if (machine > demarree) {
-		printf("la machine a laver démarre\n");
-		machine > demarree = 1;
-	}
-	else {
-		printf("la machine a laver est deja en marche \n");
-	}
-}
 
-void arreter(struct MachineALaver* machine) {
-	if (machine > demarree) {
-		printf("la machine a laver s'arretee \n");
-		machine > demarree = 0;
-	}
-	else {
-		printf("la machine a laver est deja arretee\n");
-	}
-}
-
+void demarrerVoiture(struct Voiture* voiture);
+void arreterVoiture(struct Voiture* voiture);
+void accelerer(struct Voiture* voiture);
+void freiner(struct Voiture* voiture);
+void afficherVitesse(struct Voiture voiture);
 
 int main() {
-    struct MachineALaver machine = { 0 }; 
-
-    printf("Bienvenue dans l'application de contrôle de la machine à laver.\n");
+    struct Voiture maVoiture;
+    maVoiture.estDemarree = false;
+    maVoiture.vitesse = 0;
 
     int choix;
 
     do {
-        printf("Choisissez une option :\n");
-        printf("1. Démarrer la machine à laver\n");
-        printf("2. Arrêter la machine à laver\n");
-        printf("3. Quitter\n");
-
+        printf("\nSimulateur de Voiture\n");
+        printf("1. Démarrer la voiture\n");
+        printf("2. Arrêter la voiture\n");
+        printf("3. Accélérer\n");
+        printf("4. Freiner\n");
+        printf("5. Vérifier la vitesse\n");
+        printf("6. Quitter\n");
+        printf("Entrez votre choix : ");
         scanf("%d", &choix);
 
         switch (choix) {
         case 1:
-            demarrer(&machine);
+            demarrerVoiture(&maVoiture);
             break;
         case 2:
-            arreter(&machine);
+            arreterVoiture(&maVoiture);
             break;
         case 3:
-            printf("Fin de l'application.\n");
+            accelerer(&maVoiture);
+            break;
+        case 4:
+            freiner(&maVoiture);
+            break;
+        case 5:
+            afficherVitesse(maVoiture);
+            break;
+        case 6:
+            printf("Au revoir !\n");
             break;
         default:
-            printf("Option non valide. Veuillez choisir une option valide.\n");
-            break;
+            printf("Choix invalide. Réessayez.\n");
         }
-    } while (choix != 3);
+    } while (choix != 6);
 
     return 0;
 }
+
+void demarrerVoiture(struct Voiture* voiture) {
+    if (!voiture->estDemarree) {
+        voiture->estDemarree = true;
+        printf("La voiture est démarrée.\n");
+    }
+    else {
+        printf("La voiture est déjà en marche.\n");
+    }
+}
+
+void arreterVoiture(struct Voiture* voiture) {
+    if (voiture->estDemarree) {
+        voiture->estDemarree = false;
+        voiture->vitesse = 0;
+        printf("La voiture est arrêtée.\n");
+    }
+    else {
+        printf("La voiture est déjà à l'arrêt.\n");
+    }
+}
+
+void accelerer(struct Voiture* voiture) {
+    if (voiture->estDemarree) {
+        voiture->vitesse += 10;
+        printf("La voiture accélère. Vitesse : %d km/h\n", voiture->vitesse);
+    }
+    else {
+        printf("La voiture n'est pas démarrée.\n");
+    }
+}
+
+void freiner(struct Voiture* voiture) {
+    if (voiture->estDemarree) {
+        if (voiture->vitesse > 0) {
+            voiture->vitesse -= 10;
+            printf("La voiture freine. Vitesse : %d km/h\n", voiture->vitesse);
+        }
+        else {
+            printf("La voiture est déjà à l'arrêt.\n");
+        }
+    }
+    else {
+        printf("La voiture n'est pas démarrée.\n");
+    }
+}
+
+void afficherVitesse(struct Voiture voiture) {
+    if (voiture.estDemarree) {
+        printf("Vitesse actuelle : %d km/h\n", voiture.vitesse);
+    }
+    else {
+        printf("La voiture est à l'arrêt.\n");
+    }
+}
+
